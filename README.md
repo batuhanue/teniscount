@@ -26,3 +26,9 @@ HTTPS üzerinde manifest ve service worker devreye girer. Chromium'da destekleni
 ## Doğrulama
 
 `npm test`: servis dönüşümü, uzatma, set ve maç kazanma kuralları. Mobil tarayıcıda maç kurulumu, puanlama, geri alma, mola, taraf değişimi ve yeniden yükleme sonrası kayıt doğrulanmıştır.
+
+## Tablet ve ses
+
+iPad/tablet dikey görünümünde geniş masa ve altta yan yana özet kartları; yatayda masa ve sağ özet kullanılır. iPad Split View daraldığında tek sütuna geçilir. Dokunmatik kontroller en az 44 px yüksekliğindedir.
+
+Üstteki hoparlör düğmesi tüm sesleri açar/kapatır; tercih cihazda saklanır. Sayı sesi yerel Web Audio senteziyle üretilen kısa masa tenisi topu çarpmasıdır (gerçek kayıt değildir); animasyondaki sekmeye eşlenir. Diğer kontroller kısa, düşük seviyeli tonlar kullanır. iPadOS sesin ilk kullanıcı etkileşiminde açılmasını gerektirir. Ses kapatıldığında ve sayı geri alındığında bekleyen çarpma iptal edilir.
