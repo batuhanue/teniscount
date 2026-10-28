@@ -38,3 +38,17 @@
 @media(pointer:coarse){button{touch-action:manipulation}.header .icon-btn{min-width:44px;min-height:44px}input,select{font-size:16px}.court-bottom button,.match-toolbar button,.cancel{min-height:44px}.modal-close{width:44px;height:44px}}
 footer{padding-bottom:max(22px,env(safe-area-inset-bottom))}
 @media(min-width:960px) and (max-width:1400px) and (orientation:landscape){.is-scoring .court{transform:rotateX(43deg) rotateZ(-9deg) scale(.74)}}
+/* Paddles float above the table; the shot camera gets a clear stage. */
+.paddle-layer{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:1;visibility:visible;transition:opacity .22s ease,visibility .22s;}
+.paddles-hidden{opacity:0;visibility:hidden;transition:opacity .12s ease,visibility .12s}
+.floating-paddle{position:absolute;top:13%;width:clamp(44px,8%,66px);aspect-ratio:2/3;transition:left .65s cubic-bezier(.22,1,.36,1);transform:translateX(-50%)}
+.paddle-left{left:12%}.paddle-right{left:88%}.paddle-hover{position:relative;z-index:1;transform-origin:50% 70%;animation:paddle-float-left 4.2s ease-in-out infinite;will-change:transform}.paddle-right .paddle-hover{animation-name:paddle-float-right;animation-delay:-1.4s}
+.paddle-hover svg{display:block;width:100%;overflow:visible;filter:drop-shadow(2px 5px 3px #293e3225)}
+.paddle-edge{fill:#d8c498;stroke:#efe2bf;stroke-width:2}.paddle-rubber{fill:#af7567;stroke:#87594b;stroke-width:1.5}.paddle-player-1 .paddle-rubber{fill:#465b51;stroke:#33463d}.paddle-highlight{fill:#ffffff0c}.paddle-handle-edge{fill:#6c573c;stroke:#c5ab7d;stroke-width:2}.paddle-handle{fill:#c6aa7c}.paddle-grain{fill:none;stroke:#95754e;stroke-width:1.5;opacity:.6}.paddle-seam{fill:none;stroke:#ffffff2b;stroke-width:1}.paddle-hover text{fill:#f5eddbb0;font-family:Manrope,sans-serif;font-size:18px;font-weight:650}
+.paddle-floor-shadow{position:absolute;left:11%;top:95%;width:78%;height:13%;border-radius:50%;background:#2a402e40;filter:blur(4px);transform:rotate(-15deg);animation:paddle-shadow 4.2s ease-in-out infinite}.paddle-right .paddle-floor-shadow{animation-delay:-1.4s}
+.paddles-paused .paddle-hover,.paddles-paused .paddle-floor-shadow{animation-play-state:paused}
+@keyframes paddle-float-left{0%,100%{transform:translateY(0) rotate(-24deg) rotateY(-12deg)}50%{transform:translateY(-12px) rotate(-14deg) rotateY(12deg)}}
+@keyframes paddle-float-right{0%,100%{transform:translateY(-5px) rotate(24deg) rotateY(12deg)}50%{transform:translateY(7px) rotate(14deg) rotateY(-12deg)}}
+@keyframes paddle-shadow{0%,100%{opacity:.45;scale:.85}50%{opacity:.25;scale:1.05}}
+@media(min-width:768px){.floating-paddle{top:15%;width:clamp(56px,8%,76px)}}
+@media(prefers-reduced-motion:reduce){.paddle-hover{animation:none;will-change:auto;transform:rotate(-20deg)}.paddle-right .paddle-hover{transform:rotate(20deg)}.paddle-floor-shadow{animation:none}}
