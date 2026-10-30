@@ -76,8 +76,16 @@ function App() {
   useEffect(() => {
     const fn = e => {e.preventDefault(); setInstall(e);};
     window.addEventListener('beforeinstallprompt', fn);
-    if ('serviceWorker' in navigator && import.meta.env.PROD) navigator.serviceWorker.register('/sw.js').catch(() => {});
-    return () => window.removeEventListener('beforeinstallprompt', fn);
+    let timer;
+    const checkUpdate = () => {
+      if (!document.hidden) navigator.serviceWorker?.getRegistration().then(reg => reg?.update()).catch(() => {});
+    };
+    if ('serviceWorker' in navigator && import.meta.env.PROD) {
+      navigator.serviceWorker.register('/sw.js', {updateViaCache:'none'}).then(reg => reg.update()).catch(() => {});
+      timer = setInterval(checkUpdate, 60000);
+      document.addEventListener('visibilitychange', checkUpdate);
+    }
+    return () => {window.removeEventListener('beforeinstallprompt', fn);clearInterval(timer);document.removeEventListener('visibilitychange', checkUpdate);};
   }, []);
   useEffect(() => {if (!toast) return; const id = setTimeout(() => setToast(''), 2200); return () => clearTimeout(id);}, [toast]);
   useEffect(() => {if (!event) return; const id = setTimeout(() => setEvent(null), 2400); return () => clearTimeout(id);}, [event]);

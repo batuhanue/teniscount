@@ -5,13 +5,25 @@ self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(
-    keys.filter(key => key.startsWith('courtly-') && key !== CACHE).map(key => caches.delete(key))
-  )).then(() => self.clients.claim()));
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    const previous = keys.filter(key => key.startsWith('courtly-') && key !== CACHE);
+    await self.clients.claim();
+    // Older app versions have no controllerchange handler. Migrate those open
+    // tabs too; their match is already persisted in localStorage on each point.
+    if (previous.length) {
+      const windows = await self.clients.matchAll({type:'window'});
+      // Do not await navigation during activation: its fetch can wait for this
+      // activation event itself to finish.
+      windows.filter(client => client.url.startsWith(self.registration.scope))
+        .forEach(client => {client.navigate(client.url).catch(() => {});});
+    }
+    await Promise.all(previous.map(key => caches.delete(key)));
+  })());
 });
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
-  event.respondWith(fetch(event.request).then(response => {
+  event.respondWith(fetch(event.request, {cache:event.request.mode === 'navigate' ? 'no-store' : 'default'}).then(response => {
     if (response.ok) {
       const copy = response.clone();
       event.waitUntil(caches.open(CACHE).then(cache => cache.put(event.request, copy)));
