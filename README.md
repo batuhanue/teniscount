@@ -1,6 +1,6 @@
 # Courtly · Masa tenisi sayacı
 
-React + Vite ile mobil odaklı, Türkçe, claymorphic masa tenisi sayacı.
+React + Vite + Three.js ile mobil odaklı, Türkçe masa tenisi sayacı.
 
 ## Geliştirme
 
@@ -29,6 +29,10 @@ HTTPS üzerinde manifest ve service worker devreye girer. Chromium'da destekleni
 
 ## Tablet ve ses
 
-iPad/tablet dikey görünümünde geniş masa ve altta yan yana özet kartları; yatayda masa ve sağ özet kullanılır. iPad Split View daraldığında tek sütuna geçilir. Dokunmatik kontroller en az 44 px yüksekliğindedir.
+iPad/tablet dikey görünümünde geniş 3D masa ve altta maç özeti; yatayda masa ve sağ özet kullanılır. iPad Split View daraldığında tek sütuna geçilir. Dokunmatik kontroller en az 44 px yüksekliğindedir.
 
 Üstteki hoparlör düğmesi tüm sesleri açar/kapatır; tercih cihazda saklanır. Sayı sesi yerel Web Audio senteziyle üretilen kısa masa tenisi topu çarpmasıdır (gerçek kayıt değildir); animasyondaki sekmeye eşlenir. Diğer kontroller kısa, düşük seviyeli tonlar kullanır. iPadOS sesin ilk kullanıcı etkileşiminde açılmasını gerektirir. Ses kapatıldığında ve sayı geri alındığında bekleyen çarpma iptal edilir.
+
+## 3D ralli
+
+Masa, ayaklar, file, raketler ve top gerçek WebGL geometrileridir. Raketler masanın iki ucunda topu karşılar. Her dönüşte yeni hedef, hız ve yay yüksekliği hesaplanır; hızlı, çapraz ve yüksek vuruşlar değişir. Ralli görseldir, skoru değiştirmez. Sayı girildiğinde ralli kesilir, raketler gizlenir ve kazanan vuruş oynatılır. Molada ve azaltılmış hareket tercihinde sahne sabit kalır; sekme arka plandayken çizim durur. WebGL olmayan cihazlarda skor kontrolleri kullanılabilir. 3D motor ayrı bir paket olarak yüklenir.
